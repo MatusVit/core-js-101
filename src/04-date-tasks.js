@@ -77,8 +77,9 @@ function isLeapYear(date) {
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,10,0,0,250)     => "00:00:00.250"
  *    Date(2000,1,1,10,0,0),  Date(2000,1,1,15,20,10,453)   => "05:20:10.453"
  */
-function timeSpanToString(/* startDate, endDate */) {
-  throw new Error('Not implemented');
+function timeSpanToString(startDate, endDate) {
+  const deltaTime = endDate - startDate;
+  return new Date(deltaTime).toISOString().slice(11, -1);
 }
 
 
@@ -98,8 +99,17 @@ function timeSpanToString(/* startDate, endDate */) {
  *    Date.UTC(2016,3,5,18, 0) => Math.PI
  *    Date.UTC(2016,3,5,21, 0) => Math.PI/2
  */
-function angleBetweenClockHands(/* date */) {
-  throw new Error('Not implemented');
+function angleBetweenClockHands(date) {
+  let hours = new Date(date).getUTCHours();
+  if (hours >= 12) hours -= 12;
+  const minutes = new Date(date).getUTCMinutes();
+  const degHours = (hours + (minutes / 60)) * 30;
+  const degMinutes = minutes * 6;
+  let deg = null;
+  if (degHours >= degMinutes) deg = degHours - degMinutes;
+  else deg = degMinutes - degHours;
+  if (deg > 180) deg -= 180;
+  return (deg * Math.PI) / 180;
 }
 
 
